@@ -13,7 +13,7 @@ lxml
 jupytext
 typer
 flake8
-black
+black[jupyter]
 mypy
 isort
 pytest
