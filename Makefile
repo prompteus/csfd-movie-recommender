@@ -29,3 +29,8 @@ pytest:
 jupytext:
 	test $(file)
 	jupytext --to py:percent --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' $(file)
+
+install:
+	pip install -r requirements-lock.txt
+	pip install -e .
+	pre-commit install
