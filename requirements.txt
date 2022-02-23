@@ -12,7 +12,9 @@ matplotlib
 lxml
 jupytext
 typer
-black
+flake8
+black[jupyter]
 mypy
 isort
 pytest
+types-setuptools
