@@ -18,3 +18,4 @@ mypy
 isort
 pytest
 types-setuptools
+pre-commit
