@@ -14,3 +14,10 @@ pip install -r requirements-lock.txt
 pip install -e .
 ```
 
+The code should be formatted with black + isort (and ideally have type hints),
+so make sure to set up your IDE accordingly. If you use VS Code, it should
+pick up the settings automatically and format on save. If you want to quickly
+prototype without bothering with writing quality code, use `src/recommend/notebooks/`
+directory.
+
+To check the code (format + style + tests), run `make check`.
