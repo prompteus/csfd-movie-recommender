@@ -12,6 +12,7 @@ python3 -m venv env
 source env/bin/activate
 pip install -r requirements-lock.txt
 pip install -e .
+pre-commit install
 ```
 
 The code should be formatted with black + isort (and ideally have type hints),
