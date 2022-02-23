@@ -25,3 +25,7 @@ mypy:
 
 pytest:
 	pytest -v --color=yes --durations=20 --doctest-modules --cov "$(PACKAGE_NAME)" --pyargs "$(PACKAGE_NAME)" tests
+
+jupytext:
+	test $(file)
+	jupytext --to py:percent --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' $(file)
