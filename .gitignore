@@ -1,0 +1,11 @@
+.vscode/
+.history
+data/
+env/
+*.pyc
+*.ipynb_checkpoints/
+*/__pycache__
+*.egg-info
+*.pyc
+.mypy_cache/
+.pytest_cache/
