@@ -10,3 +10,4 @@ env/
 *.pyc
 .mypy_cache/
 .pytest_cache/
+.coverage
