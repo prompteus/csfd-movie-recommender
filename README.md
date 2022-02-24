@@ -18,6 +18,7 @@ so make sure to set up your IDE accordingly. If you use VS Code, it should
 pick up the settings automatically and format on save. If you want to quickly
 prototype with jupyter notebooks use `src/recommend/notebooks/` directory.
 All ipynb files are gitignored, but you can run `make jupytext file=...`
-to convert notebook into a plain .py file which is easy to diff.
+to convert notebook into a plain .py file which is easy to diff. If you need
+to recreate a notebook from .py, use `make unjupytext file=...`.
 
 To check the code (format + style + tests), run `make check`.
