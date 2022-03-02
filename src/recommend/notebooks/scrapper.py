@@ -17,7 +17,7 @@
 import os
 import random
 import time
-from typing import Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import bs4
 import pandas as pd
@@ -42,7 +42,7 @@ headers = {
 }
 
 
-def download_movie_info(movie_id: str):
+def download_movie_info(movie_id: str) -> requests.Response:
     wait_secs = random.randint(1, 5) / 10
     time.sleep(wait_secs)
     response = requests.get(f"https://www.csfd.cz/film/{movie_id}", headers=headers)
@@ -129,7 +129,7 @@ def extract_creators(doc: bs4.BeautifulSoup) -> Dict[str, List[Tuple[str, str]]]
 
 
 def try_or_none(fun: Callable) -> Callable:
-    def f(x):
+    def f(x: Any) -> Optional[Any]:
         try:
             return fun(x)
         except Exception:
