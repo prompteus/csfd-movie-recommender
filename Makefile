@@ -24,7 +24,7 @@ mypy:
 	mypy $(PYTHON_SOURCES)
 
 pytest:
-	pytest -v --color=yes --durations=20 --doctest-modules --cov "$(PACKAGE_NAME)" --pyargs "$(PACKAGE_NAME)" tests
+	pytest -v --color=yes --durations=20 --doctest-modules --cov "$(PACKAGE_NAME)" --pyargs "$(PACKAGE_NAME)" tests --ignore src/recommend/notebooks
 
 jupytext:
 	test $(file)
