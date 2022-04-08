@@ -9,7 +9,7 @@ black:
 	black $(PYTHON_SOURCES)
 
 black-check:
-	black --check --diff $(PYTHON_SOURCES)
+	black --check --diff $(PYTHON_SOURCES) --exclude "src/recommend/notebooks/.*\.ipynb"
 
 flake8:
 	flake8 $(PYTHON_SOURCES)
@@ -18,7 +18,7 @@ isort:
 	isort $(PYTHON_SOURCES)
 
 isort-check:
-	isort --check --diff $(PYTHON_SOURCES)
+	isort --check --diff $(PYTHON_SOURCES) --skip "src/recommend/notebooks/.*\.ipynb"
 
 mypy:
 	mypy $(PYTHON_SOURCES)
