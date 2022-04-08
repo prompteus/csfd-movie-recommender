@@ -21,3 +21,4 @@ types-setuptools
 types-requests
 pre-commit
 seaborn
+torch
