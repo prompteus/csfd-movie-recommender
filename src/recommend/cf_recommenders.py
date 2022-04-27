@@ -55,7 +55,8 @@ class CFGradFactor(CFRecommender):
         all_users: List[str],
         all_movies: List[str],
         num_features: int = 100,
-        scale: float = 0.5,
+        init_shift: float = 0,
+        init_scale: float = 0.5,
         seed: int = 42,
         knn_k_movies: int = 15,
         knn_k_users: int = 100,
@@ -67,9 +68,9 @@ class CFGradFactor(CFRecommender):
         self.idx2user = pd.Series(all_users)
         self.user2idx = pd.Series(self.idx2user.index.values, index=self.idx2user.values)
         self.device = device
-        self.model = Model(num_features, len(self.movie2idx), len(self.user2idx), seed, scale).to(
-            device
-        )
+        self.model = Model(
+            num_features, len(self.movie2idx), len(self.user2idx), seed, init_shift, init_scale
+        ).to(device)
         self.knn_k_movies = knn_k_movies
         self.knn_k_users = knn_k_users
         self.optimizer: Optional[torch.optim.Optimizer] = None

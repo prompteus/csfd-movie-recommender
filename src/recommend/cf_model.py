@@ -12,6 +12,7 @@ class Model(torch.nn.Module):
         num_movies: int,
         num_users: int,
         seed: int,
+        shift: float,
         scale: float,
     ):
         super().__init__()
@@ -20,13 +21,13 @@ class Model(torch.nn.Module):
         c = 0.6
         self.movies_weights = Embedding.from_pretrained(
             torch.from_numpy(
-                random_gen.normal(0, scale, (num_movies, num_features)).clip(-c, c)
+                random_gen.normal(shift, scale, (num_movies, num_features)).clip(-c, c)
             ).float()
         )  # type: ignore
 
         self.users_weights = Embedding.from_pretrained(
             torch.from_numpy(
-                random_gen.normal(0, scale, (num_users, num_features)).clip(-c, c)
+                random_gen.normal(shift, scale, (num_users, num_features)).clip(-c, c)
             ).float()
         )  # type: ignore
 
