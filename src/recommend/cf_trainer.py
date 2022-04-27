@@ -90,6 +90,7 @@ class Trainer:
                             device = list(self.model.parameters())[0].device
                             best_idx = last_n.argmin()
                             self.model = self.past_models[best_idx].to(device)
+                            return
                 step += 1
 
 
