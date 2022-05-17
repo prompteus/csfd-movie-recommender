@@ -44,4 +44,4 @@ class Model(torch.nn.Module):
         m_b = self.movies_biases[movie_idx]
         u_w = self.users_weights(user_idx)
         u_b = self.users_biases[user_idx]
-        return torch.sigmoid((m_w * u_w).sum(-1) + m_b + u_b)
+        return (m_w * u_w).sum(-1) + m_b + u_b

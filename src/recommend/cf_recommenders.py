@@ -1,6 +1,6 @@
 import os
 from abc import ABC, abstractmethod
-from typing import Any, List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -90,6 +90,7 @@ class CFGradFactor(CFRecommender):
         early_stopping_metric: str = "mae_stars",
         early_stopping_threshold: float = 0.02,
         path_to_save: Optional[str] = None,
+        return_to_best: bool = True,
     ) -> None:
 
         assert {"username", "movie_id", "stars"}.issubset(ratings_train.columns)
@@ -111,18 +112,10 @@ class CFGradFactor(CFRecommender):
             .tolist(),
         )
 
-        def collate(*params: Any) -> Tuple[torch.Tensor, ...]:
-            movie_idx, user_idx, rating = torch.utils.data.default_collate(*params)
-            return movie_idx.to(self.device), user_idx.to(self.device), rating.to(self.device)
-
-        loader_train = DataLoader(
-            ds_train, batch_size, collate_fn=collate, num_workers=4, prefetch_factor=20
-        )
-        loader_valid = DataLoader(
-            ds_valid, batch_size, collate_fn=collate, num_workers=4, prefetch_factor=20
-        )
+        loader_train = DataLoader(ds_train, batch_size, num_workers=8, prefetch_factor=500)
+        loader_valid = DataLoader(ds_valid, batch_size, num_workers=8, prefetch_factor=500)
         loader_train_mini = DataLoader(
-            ds_train_mini, batch_size, collate_fn=collate, num_workers=4, prefetch_factor=20
+            ds_train_mini, batch_size, num_workers=8, prefetch_factor=500
         )
 
         already_trained = path_to_save is not None and os.path.exists(path_to_save)
@@ -139,16 +132,17 @@ class CFGradFactor(CFRecommender):
                 evaluate_every_n_steps,
                 early_stopping_metric,
                 early_stopping_threshold,
+                return_to_best,
             )
             if path_to_save is not None:
                 os.makedirs(os.path.dirname(path_to_save), exist_ok=True)
                 torch.save(self.model.state_dict(), path_to_save)
 
-        movies_matrix = self.model.movies_weights.weight.cpu().numpy()
+        movies_matrix = self.model.movies_weights.weight.clone().detach().cpu().numpy()
         movies_matrix /= np.linalg.norm(movies_matrix, axis=-1, keepdims=True)
         self.knn_movies = NearestNeighbors(n_neighbors=self.knn_k_movies + 1).fit(movies_matrix)
 
-        users_matrix = self.model.users_weights.weight.cpu().numpy()
+        users_matrix = self.model.users_weights.weight.clone().detach().cpu().numpy()
         users_matrix /= np.linalg.norm(users_matrix, axis=-1, keepdims=True)
         self.knn_users = NearestNeighbors(n_neighbors=self.knn_k_users + 1).fit(users_matrix)
 

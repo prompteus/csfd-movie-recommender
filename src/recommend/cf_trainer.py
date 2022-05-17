@@ -58,6 +58,7 @@ class Trainer:
         evaluate_every_n_steps: int,
         early_stopping_metric: str,
         early_stopping_threshold: float,
+        return_to_best: bool = True,
     ) -> None:
         step = 0
         device = list(self.model.parameters())[0].device
@@ -85,11 +86,14 @@ class Trainer:
                     self.past_models.append(copy.deepcopy(self.model).cpu())
                     if len(self.metrics_train) > patience:
                         self.past_models.pop(0)
+                        assert len(self.past_models) == patience
                         last_n = pd.DataFrame(self.metrics_train[-patience:])[early_stopping_metric]
+                        assert len(last_n) == patience
                         if last_n.max() - last_n.min() < early_stopping_threshold:
                             device = list(self.model.parameters())[0].device
                             best_idx = last_n.argmin()
-                            self.model = self.past_models[best_idx].to(device)
+                            if return_to_best:
+                                self.model = self.past_models[best_idx].to(device)
                             return
                 step += 1
 
