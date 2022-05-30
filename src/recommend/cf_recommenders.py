@@ -155,6 +155,7 @@ class CFGradFactor(CFRecommender):
     def recommend_from_movie(self, movie: str) -> List[str]:
         idx = torch.tensor(self.movie2idx[movie])
         vector = self.model.movies_weights(idx).cpu().numpy().reshape(1, -1)
+        vector /= np.linalg.norm(vector)
         assert self.knn_movies is not None
         distances, indices = self.knn_movies.kneighbors(vector)
         return self.idx2movie[indices[0]][1:].tolist()
@@ -162,6 +163,7 @@ class CFGradFactor(CFRecommender):
     def recommend_from_user(self, user: str) -> List[str]:
         idx = torch.tensor(self.user2idx[user])
         vector = self.model.users_weights(idx).cpu().numpy().reshape(1, -1)
+        vector /= np.linalg.norm(vector)
 
         assert self.knn_users is not None
         distances, indices = self.knn_users.kneighbors(vector)
